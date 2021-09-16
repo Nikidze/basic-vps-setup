@@ -1,23 +1,18 @@
 # Basic Vps Setup
 The basic vps setup tutorial
 
-## Create www user
-First, connect to your vps and create a new user. Then, give it a password and add it to sudo group.
-```
-adduser www
-usermod -aG sudo username
-```
-Disconnect from VPn by typing exit.
+## Automatic SSH authentication by key (run localy)
 
 ```
-exit
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@your-domain-or-ip
 ```
 
-## Automatic SSH authentication by key
+## Change SSH port to ${some port}
 
 ```
-mkdir ~/.ssh
-ssh-keygen -t rsa -q -N '' -f ~/.ssh/id_rsa
-ssh-copy-id -i ~/.ssh/id_rsa.pub www@your-domain-or-ip
+nano /etc/ssh/sshd_config
+Port ${some port}
+/sbin/iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport ${some port} -j ACCEPT
+service ssh restart
 ```
 
